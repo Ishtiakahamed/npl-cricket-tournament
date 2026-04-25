@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { Providers } from "@/components/Providers";
+import { LoginMenu } from "@/components/LoginMenu";
 import { auth } from "@/lib/auth";
 import { MobileNav } from "@/components/MobileNav";
 
@@ -67,7 +68,7 @@ export default async function RootLayout({
                     </Link>
                   </>
                 ) : (
-                  <Link href="/login" className="btn-primary !py-1.5 !px-3">Sign in</Link>
+                  <LoginMenu />
                 )}
               </div>
             </div>

@@ -108,9 +108,21 @@ export function MobileNav({ session }: { session: Session | null }) {
                   </Link>
                 </>
               ) : (
-                <Link href="/login" className="block rounded-lg px-3 py-3 text-base bg-[var(--accent)] text-black font-semibold">
-                  Sign in
-                </Link>
+                <>
+                  <div className="text-xs text-[var(--muted)] px-3 mt-1">Login as</div>
+                  <Link
+                    href="/login?role=admin"
+                    className="block rounded-lg px-3 py-3 text-base bg-[var(--accent)] text-black font-semibold"
+                  >
+                    Admin Login
+                  </Link>
+                  <Link
+                    href="/login?role=scorer"
+                    className="block rounded-lg px-3 py-3 text-base bg-[var(--accent-2)] text-black font-semibold"
+                  >
+                    Scorer Login
+                  </Link>
+                </>
               )}
             </div>
           </div>

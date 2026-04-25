@@ -48,9 +48,11 @@ Open http://localhost:3000.
 
 | Role | Username | Password |
 |------|----------|----------|
-| Admin | `admin` | `admin123` |
-| Scorer | `scorer1` | `scorer123` |
-| Scorer | `scorer2` | `scorer123` |
+| Admin | `admin@npl.com` | `Admin@12345` |
+| Scorer | `scorer@npl.com` | `Scorer@12345` |
+| Scorer | `scorer2@npl.com` | `Scorer@12345` |
+
+> ⚠️ These are demo credentials only. In production, force the admin to change passwords from the admin panel after first sign-in. Passwords are stored as bcrypt hashes; nothing is hard-coded in the frontend.
 
 The seed creates **12 fixtures** across 8 teams in 2 groups:
 
