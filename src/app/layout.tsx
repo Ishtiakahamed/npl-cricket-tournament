@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { Providers } from "@/components/Providers";
+import { LoginMenu } from "@/components/LoginMenu";
 import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -50,7 +51,7 @@ export default async function RootLayout({
                     <Link href="/api/auth/signout" className="btn">Sign out</Link>
                   </>
                 ) : (
-                  <Link href="/login" className="btn">Sign in</Link>
+                  <LoginMenu />
                 )}
               </div>
             </div>

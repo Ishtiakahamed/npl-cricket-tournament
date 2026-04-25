@@ -192,25 +192,25 @@ async function main() {
   // Users
   await prisma.user.create({
     data: {
-      username: "admin",
+      username: "admin@npl.com",
       name: "Tournament Admin",
-      passwordHash: await bcrypt.hash("admin123", 10),
+      passwordHash: await bcrypt.hash("Admin@12345", 10),
       role: "ADMIN",
     },
   });
   const scorer1 = await prisma.user.create({
     data: {
-      username: "scorer1",
+      username: "scorer@npl.com",
       name: "Match Scorer 1",
-      passwordHash: await bcrypt.hash("scorer123", 10),
+      passwordHash: await bcrypt.hash("Scorer@12345", 10),
       role: "SCORER",
     },
   });
   await prisma.user.create({
     data: {
-      username: "scorer2",
+      username: "scorer2@npl.com",
       name: "Match Scorer 2",
-      passwordHash: await bcrypt.hash("scorer123", 10),
+      passwordHash: await bcrypt.hash("Scorer@12345", 10),
       role: "SCORER",
     },
   });
@@ -530,8 +530,8 @@ async function main() {
   }
 
   console.log("Seed complete.");
-  console.log("Admin:  admin / admin123");
-  console.log("Scorer: scorer1 / scorer123");
+  console.log("Admin:  admin@npl.com / Admin@12345");
+  console.log("Scorer: scorer@npl.com / Scorer@12345");
 }
 
 main()

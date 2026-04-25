@@ -77,14 +77,14 @@ After the first successful deploy, the schema is on Postgres but it's empty. Run
 DATABASE_URL="<your postgres url>" npx prisma db seed
 ```
 
-This creates 8 teams, 4 venues, 12 fixtures (6 completed, 1 LIVE, 5 upcoming), the admin account (`admin / admin123`) and two scorer accounts. **Change the demo passwords from the admin panel before going public.**
+This creates 8 teams, 4 venues, 12 fixtures (6 completed, 1 LIVE, 5 upcoming), the admin account (`admin@npl.com / Admin@12345`) and two scorer accounts (`scorer@npl.com` and `scorer2@npl.com`, both with password `Scorer@12345`). **Change the demo passwords from the admin panel before going public.**
 
 ---
 
 ## 6. Verify
 
 - Open `https://<your-site>.netlify.app` — you should see the home page with live + upcoming + recent matches.
-- Sign in at `/login` as `admin / admin123`.
+- Sign in at `/login?role=admin` as `admin@npl.com / Admin@12345`.
 - Go to `/admin/scorers` and immediately rotate the demo passwords.
 - Open the LIVE match's public page in one tab and `/scorer/match/<id>` in another (signed in as the assigned scorer) and confirm SSE updates flow through.
 
