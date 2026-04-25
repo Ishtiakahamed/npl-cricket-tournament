@@ -76,24 +76,28 @@ export function ScorerConsole({ match }: { match: MatchWithState }) {
   return (
     <div className="space-y-4">
       <header className="card">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <div>
-            <div className="text-xs text-[var(--muted)]">Match #{match.matchNumber} · {match.venue.name}</div>
-            <h2 className="text-xl font-bold">{match.teamA.name} vs {match.teamB.name}</h2>
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <div className="text-[11px] sm:text-xs text-[var(--muted)] truncate">
+              Match #{match.matchNumber} · {match.venue.name}
+            </div>
+            <h2 className="text-base sm:text-xl font-bold leading-tight truncate">
+              {match.teamA.name} vs {match.teamB.name}
+            </h2>
             {match.tossWinner && match.tossDecision && (
-              <p className="mt-1 text-sm text-[var(--muted)]">
+              <p className="mt-1 text-xs sm:text-sm text-[var(--muted)]">
                 Toss: {match.tossWinner.name} chose to {match.tossDecision === "BAT" ? "bat" : "bowl"}
               </p>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-end gap-1.5 shrink-0">
             <span className={`badge ${match.status === "LIVE" ? "badge-live" : ""}`}>{match.status}</span>
-            <a href={`/match/${match.id}`} target="_blank" rel="noreferrer" className="btn text-xs">
-              View public →
+            <a href={`/match/${match.id}`} target="_blank" rel="noreferrer" className="btn !min-h-[32px] !py-1 !px-2 text-xs">
+              Public view →
             </a>
           </div>
         </div>
-        {error && <p className="mt-3 text-sm text-[var(--danger)]">{error}</p>}
+        {error && <p className="mt-3 rounded-lg bg-[var(--danger)]/15 border border-[var(--danger)]/40 px-3 py-2 text-sm text-[var(--danger)]">{error}</p>}
       </header>
 
       {/* Innings-one summary if we're on innings 2 or beyond */}
@@ -506,85 +510,109 @@ function ScoringPanel({
   const availableBowlers = innings.bowlerCards;
 
   return (
-    <div className="space-y-4">
-      <div className="card">
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <div className="text-xs text-[var(--muted)]">
-              {innings.battingTeam.name} · {innings.inningsNumber === 1 ? "1st" : "2nd"} innings
+    <div className="space-y-3 sm:space-y-4">
+      {/* Sticky score header — always visible while scrolling */}
+      <div className="sticky top-[56px] sm:top-[64px] z-20 -mx-3 sm:mx-0 px-3 sm:px-0">
+        <div className="card !rounded-none sm:!rounded-xl border-x-0 sm:border-x">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-[11px] sm:text-xs text-[var(--muted)] truncate">
+                {innings.battingTeam.name} · {innings.inningsNumber === 1 ? "1st" : "2nd"} innings
+              </div>
+              <div className="score-big text-3xl sm:text-4xl font-black leading-none">
+                {innings.runs}/{innings.wickets}
+              </div>
+              <div className="text-xs sm:text-sm font-semibold text-[var(--muted)] mt-0.5">
+                {formatOvers(innings.legalBalls)} / {match.overs} ov · RR {rr.toFixed(2)}
+              </div>
             </div>
-            <div className="score-big text-4xl font-black">
-              {innings.runs}/{innings.wickets}
-              <span className="ml-2 text-base text-[var(--muted)] font-semibold">
-                ({formatOvers(innings.legalBalls)} / {match.overs})
-              </span>
+            <div className="text-right shrink-0">
+              {innings.target ? (
+                <>
+                  <div className="text-[10px] sm:text-xs text-[var(--muted)]">Need</div>
+                  <div className="text-base sm:text-xl font-bold">
+                    {Math.max(0, innings.target - innings.runs)}
+                    <span className="text-xs text-[var(--muted)] font-normal"> in {ballsRemaining}</span>
+                  </div>
+                  <div className="text-[10px] sm:text-xs text-[var(--muted)]">RRR {rrr.toFixed(2)}</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-[10px] sm:text-xs text-[var(--muted)]">Extras</div>
+                  <div className="text-sm font-mono">{innings.extras}</div>
+                </>
+              )}
             </div>
           </div>
-          <div className="text-right">
-            <div className="text-xs text-[var(--muted)]">RR {rr.toFixed(2)}</div>
-            {innings.target && (
-              <>
-                <div className="text-xs text-[var(--muted)] mt-1">
-                  Target: {innings.target} · Need {Math.max(0, innings.target - innings.runs)} in {ballsRemaining} balls
-                </div>
-                <div className="text-xs text-[var(--muted)]">RRR {rrr.toFixed(2)}</div>
-              </>
-            )}
-          </div>
-        </div>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-lg bg-[var(--surface-2)] p-3 text-sm">
-            <div className="flex items-center justify-between">
-              <span><strong>{striker?.player.name ?? "—"}</strong> <span className="text-[var(--accent)]">*</span></span>
-              <span className="font-mono">{striker?.runs ?? 0} ({striker?.balls ?? 0})</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>{nonStriker?.player.name ?? "—"}</span>
-              <span className="font-mono">{nonStriker?.runs ?? 0} ({nonStriker?.balls ?? 0})</span>
-            </div>
-          </div>
-          <div className="rounded-lg bg-[var(--surface-2)] p-3 text-sm">
-            <div className="flex items-center justify-between">
-              <span>Bowler: <strong>{bowler?.player.name ?? "—"}</strong></span>
-              <span className="font-mono">{bowler ? `${formatOvers(bowler.legalBalls)}-${bowler.maidens}-${bowler.runs}-${bowler.wickets}` : "—"}</span>
-            </div>
-            <button className="btn mt-2 w-full" onClick={() => setBowlerDialog(true)}>
-              Change bowler
-            </button>
-          </div>
-        </div>
-
-        <div className="mt-3">
-          <div className="text-xs text-[var(--muted)]">Last 6 balls</div>
-          <div className="flex gap-1 mt-1">
-            {last6.length === 0 && <span className="text-sm text-[var(--muted)]">—</span>}
-            {last6.map((b) => (
-              <span
-                key={b.id}
-                className={`inline-flex h-8 min-w-8 items-center justify-center rounded-full px-2 text-xs font-bold ${ballBadgeClass(b)}`}
-              >
-                {ballLabel(b)}
+          {/* Last 6 balls */}
+          <div className="mt-2.5">
+            <div className="flex items-center gap-1.5 overflow-x-auto scroll-x">
+              <span className="text-[10px] uppercase tracking-wide text-[var(--muted)] shrink-0 mr-1">
+                This over
               </span>
-            ))}
+              {last6.length === 0 && <span className="text-sm text-[var(--muted)]">—</span>}
+              {last6.map((b) => (
+                <span
+                  key={b.id}
+                  className={`inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs font-bold shrink-0 ${ballBadgeClass(b)}`}
+                >
+                  {ballLabel(b)}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Extras selector */}
+      {/* Batters / bowler */}
+      <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2">
+        <div className="card text-sm space-y-1.5">
+          <div className="text-[10px] uppercase tracking-wide text-[var(--muted)]">Batting</div>
+          <div className="flex items-center justify-between gap-2">
+            <span className="truncate">
+              <strong>{striker?.player.name ?? "—"}</strong>
+              <span className="text-[var(--accent)]"> *</span>
+            </span>
+            <span className="font-mono shrink-0">{striker?.runs ?? 0} ({striker?.balls ?? 0})</span>
+          </div>
+          <div className="flex items-center justify-between gap-2">
+            <span className="truncate">{nonStriker?.player.name ?? "—"}</span>
+            <span className="font-mono shrink-0">{nonStriker?.runs ?? 0} ({nonStriker?.balls ?? 0})</span>
+          </div>
+        </div>
+        <div className="card text-sm space-y-1.5">
+          <div className="text-[10px] uppercase tracking-wide text-[var(--muted)]">Bowling</div>
+          <div className="flex items-center justify-between gap-2">
+            <span className="truncate"><strong>{bowler?.player.name ?? "—"}</strong></span>
+            <span className="font-mono text-xs shrink-0">
+              {bowler ? `${formatOvers(bowler.legalBalls)}-${bowler.maidens}-${bowler.runs}-${bowler.wickets}` : "—"}
+            </span>
+          </div>
+          <button className="btn w-full !min-h-[36px] !py-1.5" onClick={() => setBowlerDialog(true)}>
+            Change bowler
+          </button>
+        </div>
+      </div>
+
+      {/* Delivery type */}
       <div className="card">
-        <div className="text-xs text-[var(--muted)] mb-2">Delivery type</div>
-        <div className="flex flex-wrap gap-2">
+        <div className="text-[10px] uppercase tracking-wide text-[var(--muted)] mb-2">Delivery type</div>
+        <div className="grid grid-cols-5 gap-1.5">
           {([
             ["NONE", "Legal"],
             ["WIDE", "Wide"],
-            ["NO_BALL", "No Ball"],
+            ["NO_BALL", "No-Ball"],
             ["BYE", "Bye"],
-            ["LEG_BYE", "Leg Bye"],
+            ["LEG_BYE", "Leg-Bye"],
           ] as const).map(([val, label]) => (
             <button
               key={val}
-              className={`btn ${extraType === val ? "!bg-[var(--accent)] !text-black" : ""}`}
+              className={`rounded-lg border border-[var(--border)] py-2.5 text-xs sm:text-sm font-semibold transition active:scale-[0.97] ${
+                extraType === val
+                  ? "bg-[var(--accent)] text-black border-transparent"
+                  : "bg-[var(--surface-2)]"
+              }`}
               onClick={() => setExtraType(val)}
             >
               {label}
@@ -593,19 +621,19 @@ function ScoringPanel({
         </div>
 
         {/* Run buttons */}
-        <div className="mt-4">
-          <div className="text-xs text-[var(--muted)] mb-2">
-            {extraType === "WIDE" && "Extra runs on the wide (0 = wide + 0)"}
-            {extraType === "NO_BALL" && "Runs off the bat / byes (penalty +1 auto-added)"}
-            {extraType === "BYE" && "Runs scored as byes"}
-            {extraType === "LEG_BYE" && "Runs scored as leg-byes"}
+        <div className="mt-3">
+          <div className="text-[10px] uppercase tracking-wide text-[var(--muted)] mb-2">
+            {extraType === "WIDE" && "Extra runs on the wide (0 = wide+0)"}
+            {extraType === "NO_BALL" && "Runs off the bat (no-ball penalty +1 auto)"}
+            {extraType === "BYE" && "Byes"}
+            {extraType === "LEG_BYE" && "Leg-byes"}
             {extraType === "NONE" && "Runs off the bat"}
           </div>
-          <div className="grid grid-cols-6 gap-2">
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
             {[0, 1, 2, 3, 4, 6].map((r) => (
               <button
                 key={r}
-                className={`h-16 rounded-xl text-2xl font-black ${
+                className={`h-16 sm:h-16 rounded-xl text-3xl sm:text-2xl font-black active:scale-95 transition ${
                   r === 4
                     ? "bg-[var(--accent)] text-black"
                     : r === 6
@@ -622,12 +650,12 @@ function ScoringPanel({
         </div>
 
         {/* Wicket / Undo */}
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          <button className="btn-danger h-14 text-base font-bold" onClick={() => setWicketDialog(true)}>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button className="btn-danger !h-14 text-base font-bold" onClick={() => setWicketDialog(true)}>
             WICKET
           </button>
-          <button className="btn h-14 text-base font-bold" onClick={onUndo} disabled={busy}>
-            UNDO LAST BALL
+          <button className="btn !h-14 text-base font-bold" onClick={onUndo} disabled={busy}>
+            UNDO
           </button>
         </div>
 
@@ -642,14 +670,17 @@ function ScoringPanel({
           />
         </div>
 
+        {endOfOverApproaching && (
+          <p className="mt-3 rounded-lg bg-[var(--warn)]/15 border border-[var(--warn)]/40 px-3 py-2 text-xs text-[var(--warn)]">
+            End of over — choose a new bowler before the next ball.
+          </p>
+        )}
+
         {/* End innings */}
-        <div className="mt-3 flex justify-between">
-          <button className="btn-danger" onClick={onEndInnings} disabled={busy}>End innings</button>
-          {endOfOverApproaching && (
-            <span className="text-xs text-[var(--warn)] self-center">
-              End of over — choose new bowler before next ball
-            </span>
-          )}
+        <div className="mt-3">
+          <button className="btn-danger w-full" onClick={onEndInnings} disabled={busy}>
+            End innings
+          </button>
         </div>
       </div>
 
@@ -705,8 +736,8 @@ function WicketDialog({
   const [runs, setRuns] = useState(0);
   const [newBatterId, setNewBatterId] = useState(availableBatters[0]?.playerId ?? "");
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-      <div className="card w-full max-w-md">
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center sm:p-4">
+      <div className="card w-full max-w-md rounded-b-none sm:rounded-xl max-h-[92vh] overflow-y-auto">
         <h3 className="text-lg font-bold mb-3">Wicket</h3>
         <div className="space-y-3">
           <div>
@@ -755,10 +786,10 @@ function WicketDialog({
               ))}
             </select>
           </div>
-          <div className="flex gap-2 justify-end">
-            <button className="btn" onClick={onCancel}>Cancel</button>
+          <div className="grid grid-cols-2 gap-2 pt-1">
+            <button className="btn !h-12" onClick={onCancel}>Cancel</button>
             <button
-              className="btn-danger"
+              className="btn-danger !h-12"
               onClick={() => onSubmit({ wicketType, outPlayerId, runs, newBatterId })}
             >
               Record wicket
@@ -783,8 +814,8 @@ function BowlerDialog({
 }) {
   const [id, setId] = useState(currentBowlerId);
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-      <div className="card w-full max-w-md">
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center sm:p-4">
+      <div className="card w-full max-w-md rounded-b-none sm:rounded-xl max-h-[92vh] overflow-y-auto">
         <h3 className="text-lg font-bold mb-3">Change bowler</h3>
         <select className="input" value={id} onChange={(e) => setId(e.target.value)}>
           {bowlers.map((b) => (
@@ -793,9 +824,9 @@ function BowlerDialog({
             </option>
           ))}
         </select>
-        <div className="mt-3 flex justify-end gap-2">
-          <button className="btn" onClick={onCancel}>Cancel</button>
-          <button className="btn-primary" onClick={() => onSubmit(id)}>Set bowler</button>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button className="btn !h-12" onClick={onCancel}>Cancel</button>
+          <button className="btn-primary !h-12" onClick={() => onSubmit(id)}>Set bowler</button>
         </div>
       </div>
     </div>

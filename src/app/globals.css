@@ -21,20 +21,36 @@ body {
   color: var(--fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Inputs default to 16px on mobile to prevent zoom-on-focus on iOS */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }
 
 @layer components {
   .card {
-    @apply rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm;
+    @apply rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 sm:p-4 shadow-sm;
   }
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm font-medium transition hover:bg-[var(--border)] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm font-medium transition hover:bg-[var(--border)] active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed min-h-[40px];
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-semibold text-black transition hover:bg-[var(--accent-2)] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-semibold text-black transition hover:bg-[var(--accent-2)] active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed min-h-[40px];
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center rounded-lg bg-[var(--danger)] px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-lg bg-[var(--danger)] px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110 active:scale-[0.97] disabled:opacity-50 min-h-[40px];
   }
   .input {
     @apply w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)];
@@ -61,4 +77,10 @@ body {
 
 .score-big {
   font-variant-numeric: tabular-nums;
+}
+
+/* Smooth horizontal scrolls on small screens (e.g. tables, ball-by-ball strip) */
+.scroll-x {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }

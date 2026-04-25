@@ -22,7 +22,7 @@ export default async function AdminOverview() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Admin dashboard</h1>
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
         {stats.map((s) => (
           <div key={s.label} className="card">
             <div className="text-xs text-[var(--muted)]">{s.label}</div>

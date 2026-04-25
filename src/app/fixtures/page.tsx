@@ -13,7 +13,36 @@ export default async function FixturesPage() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Fixtures</h1>
-      <div className="card overflow-x-auto">
+
+      {/* Mobile: stacked cards */}
+      <div className="sm:hidden space-y-2">
+        {matches.map((m) => (
+          <Link
+            key={m.id}
+            href={`/match/${m.id}`}
+            className="card block active:scale-[0.99] transition"
+          >
+            <div className="flex items-center justify-between text-xs text-[var(--muted)]">
+              <span>Match #{m.matchNumber} · {m.groupName ?? "—"}</span>
+              <span className={`badge ${m.status === "LIVE" ? "badge-live" : ""}`}>
+                {m.status}
+              </span>
+            </div>
+            <div className="mt-1 font-semibold leading-tight">
+              {m.teamA.name} <span className="text-[var(--muted)] font-normal">vs</span> {m.teamB.name}
+            </div>
+            <div className="mt-1 text-xs text-[var(--muted)]">
+              {formatDateTime(m.scheduledAt)} · {m.venue.name}
+            </div>
+            {m.resultText && (
+              <div className="mt-1 text-xs text-[var(--accent)]">{m.resultText}</div>
+            )}
+          </Link>
+        ))}
+      </div>
+
+      {/* Desktop / tablet: full table */}
+      <div className="hidden sm:block card scroll-x overflow-x-auto">
         <table className="table-cricket min-w-[800px]">
           <thead>
             <tr>

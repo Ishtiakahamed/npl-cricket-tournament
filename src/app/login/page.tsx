@@ -131,6 +131,9 @@ export default function LoginPage() {
               className="input"
               autoFocus
               autoComplete="username"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder={demo.username}
