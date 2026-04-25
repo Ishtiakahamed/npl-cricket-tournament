@@ -1,0 +1,13 @@
+[build]
+  command = "npx prisma generate && npx prisma migrate deploy && npm run build"
+  publish = ".next"
+
+# The official Next.js plugin handles SSR routes, API routes, and SSE on Netlify Functions.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Required at deploy time:
+#   DATABASE_URL       — Postgres connection string (e.g. from Neon / Supabase)
+#   NEXTAUTH_SECRET    — random 32-byte string  (run: openssl rand -base64 32)
+#   NEXTAUTH_URL       — full https URL of your Netlify site (e.g. https://your-site.netlify.app)
+# See NETLIFY_DEPLOY.md for the full walkthrough.
