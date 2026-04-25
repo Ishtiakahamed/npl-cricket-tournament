@@ -8,9 +8,12 @@ export default function LoginPage() {
   const router = useRouter();
   const sp = useSearchParams();
   const callbackUrl = sp.get("callbackUrl") ?? "/";
+  const errorParam = sp.get("error");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    errorParam ? "Sign in failed — please try again." : null
+  );
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: FormEvent) => {

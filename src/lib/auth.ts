@@ -7,7 +7,9 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
+    error: "/login",
   },
+  debug: process.env.NEXTAUTH_DEBUG === "1",
   providers: [
     CredentialsProvider({
       name: "Credentials",
