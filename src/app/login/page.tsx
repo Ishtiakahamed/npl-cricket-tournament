@@ -31,13 +31,16 @@ export default function LoginPage() {
   const sp = useSearchParams();
   const roleParam = sp.get("role");
   const callbackUrl = sp.get("callbackUrl") ?? undefined;
+  const errorParam = sp.get("error");
 
   const initialRole: LoginRole = isLoginRole(roleParam) ? roleParam : "admin";
   const [role, setRole] = useState<LoginRole>(initialRole);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    errorParam ? "Sign in failed — please try again." : null
+  );
   const [loading, setLoading] = useState(false);
 
   // Keep tab in sync with URL when user navigates back/forward
