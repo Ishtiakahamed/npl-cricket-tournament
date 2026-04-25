@@ -142,7 +142,7 @@ export function FixturesAdmin({
         </form>
       </section>
 
-      <section className="card overflow-x-auto">
+      <section className="card scroll-x overflow-x-auto">
         <table className="table-cricket min-w-[1100px]">
           <thead>
             <tr>

@@ -20,20 +20,20 @@ export default async function PointsPage() {
         </p>
       </div>
       {Array.from(groups.entries()).map(([group, rows]) => (
-        <section key={group} className="card overflow-x-auto">
+        <section key={group} className="card scroll-x overflow-x-auto">
           <h2 className="mb-3 text-lg font-bold">{group}</h2>
-          <table className="table-cricket min-w-[700px]">
+          <table className="table-cricket min-w-[560px]">
             <thead>
               <tr>
-                <th>#</th>
+                <th className="w-8">#</th>
                 <th>Team</th>
-                <th>M</th>
-                <th>W</th>
-                <th>L</th>
-                <th>T</th>
-                <th>NR</th>
-                <th>Pts</th>
-                <th>NRR</th>
+                <th className="text-right">M</th>
+                <th className="text-right">W</th>
+                <th className="text-right">L</th>
+                <th className="text-right hidden sm:table-cell">T</th>
+                <th className="text-right hidden sm:table-cell">NR</th>
+                <th className="text-right">Pts</th>
+                <th className="text-right">NRR</th>
               </tr>
             </thead>
             <tbody>
@@ -41,13 +41,13 @@ export default async function PointsPage() {
                 <tr key={s.teamId}>
                   <td>{i + 1}</td>
                   <td className="font-medium">{s.teamName}</td>
-                  <td>{s.matches}</td>
-                  <td>{s.won}</td>
-                  <td>{s.lost}</td>
-                  <td>{s.tied}</td>
-                  <td>{s.noResult}</td>
-                  <td className="font-bold">{s.points}</td>
-                  <td className={s.nrr >= 0 ? "text-[var(--accent)]" : "text-[var(--danger)]"}>
+                  <td className="text-right font-mono">{s.matches}</td>
+                  <td className="text-right font-mono">{s.won}</td>
+                  <td className="text-right font-mono">{s.lost}</td>
+                  <td className="text-right font-mono hidden sm:table-cell">{s.tied}</td>
+                  <td className="text-right font-mono hidden sm:table-cell">{s.noResult}</td>
+                  <td className="text-right font-mono font-bold">{s.points}</td>
+                  <td className={`text-right font-mono ${s.nrr >= 0 ? "text-[var(--accent)]" : "text-[var(--danger)]"}`}>
                     {s.nrr >= 0 ? "+" : ""}
                     {s.nrr.toFixed(3)}
                   </td>

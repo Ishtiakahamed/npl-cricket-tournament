@@ -69,17 +69,17 @@ export default async function MatchPage({ params }: { params: { id: string } }) 
 
       {/* Header */}
       <section className="card">
-        <div className="flex flex-wrap items-center gap-3 text-sm">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
           <span className={`badge ${match.status === "LIVE" ? "badge-live" : ""}`}>
             {match.status}
           </span>
           <span className="text-[var(--muted)]">{match.venue.name}</span>
-          <span className="text-[var(--muted)]">·</span>
+          <span className="text-[var(--muted)] hidden sm:inline">·</span>
           <span className="text-[var(--muted)]">{formatDateTime(match.scheduledAt)}</span>
-          <span className="text-[var(--muted)]">·</span>
-          <span className="text-[var(--muted)]">{match.overs} overs</span>
+          <span className="text-[var(--muted)] hidden sm:inline">·</span>
+          <span className="text-[var(--muted)]">{match.overs} ov</span>
         </div>
-        <h1 className="mt-3 text-2xl md:text-3xl font-bold">
+        <h1 className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
           {match.teamA.name} vs {match.teamB.name}
         </h1>
         {match.tossWinner && (
@@ -98,25 +98,25 @@ export default async function MatchPage({ params }: { params: { id: string } }) 
         <section className="card">
           {currentInn ? (
             <>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-[var(--muted)]">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-xs sm:text-sm text-[var(--muted)] truncate">
                     {currentInn.battingTeam.name} — {currentInn.inningsNumber === 1 ? "1st" : "2nd"} innings
                   </div>
-                  <div className="mt-1 score-big text-4xl font-black">
+                  <div className="mt-1 score-big text-3xl sm:text-4xl font-black leading-none">
                     {currentInn.runs}/{currentInn.wickets}
-                    <span className="ml-3 text-base font-semibold text-[var(--muted)]">
-                      ({formatOvers(currentInn.legalBalls)} / {match.overs} ov)
-                    </span>
+                  </div>
+                  <div className="mt-1 text-xs sm:text-sm font-semibold text-[var(--muted)]">
+                    {formatOvers(currentInn.legalBalls)} / {match.overs} ov
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs text-[var(--muted)]">Run Rate</div>
-                  <div className="text-2xl font-bold">{rr.toFixed(2)}</div>
+                <div className="text-right shrink-0">
+                  <div className="text-[10px] sm:text-xs text-[var(--muted)]">Run Rate</div>
+                  <div className="text-xl sm:text-2xl font-bold">{rr.toFixed(2)}</div>
                   {currentInn.target && (
                     <>
-                      <div className="mt-2 text-xs text-[var(--muted)]">Target / RRR</div>
-                      <div className="text-sm font-semibold">
+                      <div className="mt-2 text-[10px] sm:text-xs text-[var(--muted)]">Target / RRR</div>
+                      <div className="text-xs sm:text-sm font-semibold">
                         {currentInn.target} · {rrr.toFixed(2)}
                       </div>
                     </>

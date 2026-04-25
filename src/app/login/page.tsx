@@ -44,6 +44,10 @@ export default function LoginPage() {
             <input
               className="input"
               autoFocus
+              autoComplete="username"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -54,6 +58,7 @@ export default function LoginPage() {
             <input
               type="password"
               className="input"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
