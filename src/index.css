@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply m-0 p-0 font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-telegram-darker;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-telegram-textSec rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-telegram-accent;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-telegram-blue text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium text-sm;
+  }
+  .btn-danger {
+    @apply px-4 py-2 bg-telegram-red text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium text-sm;
+  }
+  .btn-secondary {
+    @apply px-4 py-2 bg-telegram-panel text-telegram-text rounded-lg hover:bg-telegram-hover transition-colors font-medium text-sm border border-telegram-textSec/20;
+  }
+  .btn-success {
+    @apply px-4 py-2 bg-telegram-green text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium text-sm;
+  }
+  .btn-warning {
+    @apply px-4 py-2 bg-telegram-orange text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium text-sm;
+  }
+  .input-field {
+    @apply w-full px-3 py-2 bg-telegram-darker border border-telegram-textSec/20 rounded-lg text-telegram-text placeholder-telegram-textSec focus:outline-none focus:border-telegram-blue transition-colors text-sm;
+  }
+  .select-field {
+    @apply w-full px-3 py-2 bg-telegram-darker border border-telegram-textSec/20 rounded-lg text-telegram-text focus:outline-none focus:border-telegram-blue transition-colors text-sm;
+  }
+  .card {
+    @apply bg-telegram-panel rounded-xl p-4 border border-telegram-textSec/10;
+  }
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-draft {
+    @apply badge bg-telegram-textSec/20 text-telegram-textSec;
+  }
+  .badge-approved {
+    @apply badge bg-telegram-green/20 text-telegram-green;
+  }
+  .badge-rejected {
+    @apply badge bg-telegram-red/20 text-telegram-red;
+  }
+  .badge-sent {
+    @apply badge bg-telegram-blue/20 text-telegram-accent;
+  }
+  .badge-scheduled {
+    @apply badge bg-telegram-orange/20 text-telegram-orange;
+  }
+}
