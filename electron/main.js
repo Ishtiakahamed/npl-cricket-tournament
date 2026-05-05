@@ -183,10 +183,10 @@ function registerIpcHandlers() {
       LEFT JOIN participants p ON ss.participant_id = p.id
       LEFT JOIN groups g ON s.group_id = g.id`;
     if (filter && filter !== 'all') {
-      query += ` WHERE ss.status = '${filter}'`;
+      query += ` WHERE ss.status = ?`;
     }
     query += ' ORDER BY ss.scheduled_time, ss.step_number';
-    return db.prepare(query).all();
+    return filter && filter !== 'all' ? db.prepare(query).all(filter) : db.prepare(query).all();
   });
 
   ipcMain.handle('db:approveStep', (_e, id) => {
