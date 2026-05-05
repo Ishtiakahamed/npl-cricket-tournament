@@ -83,6 +83,8 @@ export default function Simulation() {
       timerRef.current = setTimeout(() => {
         setCurrentIndex(1);
       }, Math.max(nextDelay, 500));
+    } else {
+      setTimeout(() => setIsPlaying(false), 1000);
     }
   };
 

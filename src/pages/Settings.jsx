@@ -104,7 +104,7 @@ export default function Settings() {
       for (const s of scripts) {
         const steps = await api.getScriptSteps(s.id);
         for (const step of steps) {
-          csv += `"${s.title}",${step.step_number},"${step.participant_name}","${step.message_type}","${step.message_text.replace(/"/g, '""')}",${step.reply_to_step || ''},"${step.scheduled_time}","${step.status}"\n`;
+          csv += `"${s.title.replace(/"/g, '""')}",${step.step_number},"${(step.participant_name || '').replace(/"/g, '""')}","${step.message_type}","${step.message_text.replace(/"/g, '""')}",${step.reply_to_step || ''},"${step.scheduled_time}","${step.status}"\n`;
         }
       }
       const blob = new Blob([csv], { type: 'text/csv' });
