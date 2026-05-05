@@ -11,7 +11,7 @@ export default function ScriptManager() {
   const [showStepForm, setShowStepForm] = useState(false);
   const [editingStep, setEditingStep] = useState(null);
   const [scriptForm, setScriptForm] = useState({ group_id: '', title: '', topic: '', description: '' });
-  const [stepForm, setStepForm] = useState({ participant_id: '', message_type: 'message', message_text: '', reply_to_step: '', delay_seconds: 45, scheduled_time: '', status: 'draft' });
+  const [stepForm, setStepForm] = useState({ participant_id: '', message_type: 'opening_topic', message_text: '', reply_to_step: '', delay_seconds: 45, scheduled_time: '', status: 'draft' });
 
   const loadSteps = useCallback(async (scriptId) => {
     const data = await api.getScriptSteps(scriptId);
@@ -55,7 +55,7 @@ export default function ScriptManager() {
     await loadSteps(selectedScript.id);
     setShowStepForm(false);
     setEditingStep(null);
-    setStepForm({ participant_id: '', message_type: 'message', message_text: '', reply_to_step: '', delay_seconds: 45, scheduled_time: '', status: 'draft' });
+    setStepForm({ participant_id: '', message_type: 'opening_topic', message_text: '', reply_to_step: '', delay_seconds: 45, scheduled_time: '', status: 'draft' });
   };
 
   const handleEditStep = (step) => {
@@ -159,7 +159,7 @@ export default function ScriptManager() {
                 </div>
                 <div className="flex gap-2">
                   <button onClick={handleAutoSchedule} className="btn-secondary text-xs">Auto Schedule</button>
-                  <button onClick={() => { setEditingStep(null); setStepForm({ participant_id: '', message_type: 'message', message_text: '', reply_to_step: '', delay_seconds: 45, scheduled_time: '', status: 'draft' }); setShowStepForm(!showStepForm); }}
+                  <button onClick={() => { setEditingStep(null); setStepForm({ participant_id: '', message_type: 'opening_topic', message_text: '', reply_to_step: '', delay_seconds: 45, scheduled_time: '', status: 'draft' }); setShowStepForm(!showStepForm); }}
                     className="btn-primary text-xs">+ Add Step</button>
                 </div>
               </div>
