@@ -5,17 +5,19 @@ import toast from 'react-hot-toast';
 
 export default function ApprovalQueue() {
   const { api, refreshStats } = useApp();
-  const [queue, setQueue] = useState([]);
+  const [allItems, setAllItems] = useState([]);
   const [filter, setFilter] = useState('all');
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
 
   const loadQueue = useCallback(async () => {
-    const data = await api.getApprovalQueue(filter);
-    setQueue(data);
-  }, [api, filter]);
+    const data = await api.getApprovalQueue('all');
+    setAllItems(data);
+  }, [api]);
 
   useEffect(() => { loadQueue(); }, [loadQueue]);
+
+  const queue = filter === 'all' ? allItems : allItems.filter((q) => q.status === filter);
 
   const handleApprove = async (id) => {
     await api.approveStep(id);
@@ -50,10 +52,10 @@ export default function ApprovalQueue() {
   };
 
   const statusCounts = {
-    all: queue.length,
-    draft: queue.filter((q) => q.status === 'draft').length,
-    approved: queue.filter((q) => q.status === 'approved').length,
-    rejected: queue.filter((q) => q.status === 'rejected').length,
+    all: allItems.length,
+    draft: allItems.filter((q) => q.status === 'draft').length,
+    approved: allItems.filter((q) => q.status === 'approved').length,
+    rejected: allItems.filter((q) => q.status === 'rejected').length,
   };
 
   return (

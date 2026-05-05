@@ -7,6 +7,7 @@ export default function TelegramSettings() {
   const [botToken, setBotToken] = useState('');
   const [apiId, setApiId] = useState('');
   const [apiHash, setApiHash] = useState('');
+  const [openRouterKey, setOpenRouterKey] = useState('');
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   const [testing, setTesting] = useState(false);
 
@@ -14,6 +15,7 @@ export default function TelegramSettings() {
     setBotToken(settings.bot_token || '');
     setApiId(settings.api_id || '');
     setApiHash(settings.api_hash || '');
+    setOpenRouterKey(settings.openrouter_key || '');
     if (settings.bot_token) setConnectionStatus('saved');
   }, [settings]);
 
@@ -173,18 +175,17 @@ export default function TelegramSettings() {
         <div className="flex gap-2">
           <input
             type="password"
-            value={settings.openrouter_key || ''}
-            onChange={async (e) => {
-              await api.setSetting({ key: 'openrouter_key', value: e.target.value });
-              await refreshSettings();
-            }}
+            value={openRouterKey}
+            onChange={(e) => setOpenRouterKey(e.target.value)}
             placeholder="sk-or-v1-..."
             className="input-field flex-1"
           />
           <button
             onClick={async () => {
-              toast.success('OpenRouter API key saved');
+              await api.setSetting({ key: 'openrouter_key', value: openRouterKey });
               await api.addLog({ type: 'info', message: 'OpenRouter API key updated' });
+              await refreshSettings();
+              toast.success('OpenRouter API key saved');
             }}
             className="btn-primary"
           >
